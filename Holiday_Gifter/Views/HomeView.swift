@@ -13,7 +13,7 @@ struct HomeView: View {
             Image(systemName: "globe")
                 .imageScale(.large)
                 .foregroundStyle(.tint)
-            Text("Hello, world! This is a SwiftUI app.")
+            Text("Hello, world! This is a SwiftUI app, Home.")
         }
         .padding()
     }

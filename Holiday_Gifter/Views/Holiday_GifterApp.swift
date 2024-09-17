@@ -11,7 +11,7 @@ import SwiftUI
 struct Holiday_GifterApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            HomeView()
         }
     }
 }
