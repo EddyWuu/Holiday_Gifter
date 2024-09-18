@@ -9,9 +9,10 @@ import SwiftUI
 
 @main
 struct Holiday_GifterApp: App {
+    
     var body: some Scene {
         WindowGroup {
-            HomeView()
+            ContentView()
         }
     }
 }
