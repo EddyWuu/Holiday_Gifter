@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ContentView: View {
     
+    let recipientsViewModel = RecipientsViewModel()
+    
     var body: some View {
         TabView {
             HomeView()
@@ -16,7 +18,7 @@ struct ContentView: View {
                     Label("Home", systemImage: "house")
                 }
             
-            TrackGiftsView()
+            TrackGiftsView(viewModel: recipientsViewModel)
                 .tabItem {
                     Label("Track Gifts", systemImage: "gift")
                 }

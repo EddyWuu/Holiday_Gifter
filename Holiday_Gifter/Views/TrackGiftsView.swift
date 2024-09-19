@@ -9,17 +9,44 @@ import SwiftUI
 
 struct TrackGiftsView: View {
     
+    @ObservedObject var viewModel: RecipientsViewModel
+    @State var newRecipientName: String = ""
+    @State var selectedRecipient: Recipient?
+    @State var showGiftSheet = false
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world! This is a SwiftUI app, track gifts.")
+        
+        NavigationView {
+            VStack {
+                List(viewModel.recipients) { recipient in
+                    Button(action: {
+                        selectedRecipient = recipient
+                        showGiftSheet = true
+                    }) {
+                        HStack {
+                            VStack(alignment: .leading) {
+                                Text(recipient.name)
+                                    .font(.headline)
+                                
+                                Text("Gifts: \(recipient.gifts.count)")
+                                    .font(.subheadline)
+                                    .foregroundColor(.secondary)
+                            }
+                            
+                            Spacer()
+                            
+                            Image(systemName: "chevron.right")
+                                .foregroundColor(.gray)
+                        }
+                    }
+                }
+            }
+            .navigationTitle("Giftees")
         }
-        .padding()
     }
 }
 
 #Preview {
-    TrackGiftsView()
+    TrackGiftsView(viewModel: RecipientsViewModel())
+    
 }
