@@ -43,10 +43,12 @@ struct TrackGiftsView: View {
             }
             .navigationTitle("Giftees")
         }
+        
+        .sheet(isPresented: $showGiftSheet) {
+            if let selectedRecipient = selectedRecipient {
+                GiftDetailsView(recipient: selectedRecipient, showGiftDetails: $showGiftSheet)
+            }
+        }
     }
 }
 
-#Preview {
-    TrackGiftsView(viewModel: RecipientsViewModel())
-    
-}

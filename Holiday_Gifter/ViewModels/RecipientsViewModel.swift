@@ -26,6 +26,7 @@ class RecipientsViewModel: ObservableObject {
         ]
     
     
+    
     // func to add recipient
     func addRecipient(name: String) {
         
