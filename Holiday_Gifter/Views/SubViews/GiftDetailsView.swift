@@ -14,9 +14,29 @@ struct GiftDetailsView: View {
     
     var body: some View {
             
-        VStack {
-            Text("hello")
-                .font(.title)
+        NavigationView {
+            VStack {
+                ForEach(recipient.gifts) { gift in
+                    Text("\(gift.name)")
+                    Text("\(gift.price)")
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        showGiftDetails = false
+                    }) {
+                        Image(systemName: "xmark")
+                            .foregroundColor(.primary)
+                    }
+                }
+                
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Text("Gift Details")
+                        .font(.title2)
+                        .bold()
+                }
+            }
         }
     }
 }
