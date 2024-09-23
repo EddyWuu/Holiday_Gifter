@@ -15,10 +15,25 @@ struct GiftDetailsView: View {
     var body: some View {
             
         NavigationView {
-            VStack {
+            List {
                 ForEach(recipient.gifts) { gift in
-                    Text("\(gift.name)")
-                    Text("\(gift.price)")
+                    HStack {
+                        VStack(alignment: .leading) {
+                            Text(gift.name)
+                                .font(.headline)
+                            Text("Price($): \(gift.price, specifier: "%.2f")")
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                        }
+                        Spacer()
+                    }
+                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                        Button(role: .destructive) {
+                            // TODO, to remove from gifts
+                        } label: {
+                            Label("Delete", systemImage: "trash")
+                        }
+                    }
                 }
             }
             .toolbar {

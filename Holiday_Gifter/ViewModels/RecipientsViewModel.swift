@@ -39,4 +39,12 @@ class RecipientsViewModel: ObservableObject {
         
         recipients.removeAll { $0.name == name }
     }
+    
+    func addGift() {
+
+    }
+    
+    func removeGift(gift: Gift) {
+        
+    }
 }
