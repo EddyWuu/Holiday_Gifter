@@ -10,7 +10,6 @@ import SwiftUI
 struct GiftDetailsView: View {
     
     var recipient: Recipient
-    @Binding var showGiftDetails: Bool
     @State private var addGiftSheet: Bool = false
     
     var body: some View {
@@ -53,24 +52,10 @@ struct GiftDetailsView: View {
                         .cornerRadius(10)
                 }
                 .padding(.horizontal)
-                
             }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        showGiftDetails = false
-                    }) {
-                        Image(systemName: "xmark")
-                            .foregroundColor(.primary)
-                    }
-                }
-                
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Text("Gift Details")
-                        .font(.title2)
-                        .bold()
-                }
-            }
+        }
+        .sheet(isPresented: $addGiftSheet) {
+            AddGiftSheetView(recipient: recipient)
         }
     }
 }

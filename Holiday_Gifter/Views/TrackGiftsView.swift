@@ -12,17 +12,13 @@ struct TrackGiftsView: View {
     @ObservedObject var viewModel: RecipientsViewModel
     @State var newRecipientName: String = ""
     @State var selectedRecipient: Recipient?
-    @State var showGiftSheet = false
     
     var body: some View {
         
         NavigationView {
             VStack {
                 List(viewModel.recipients) { recipient in
-                    Button(action: {
-                        selectedRecipient = recipient
-                        showGiftSheet = true
-                    }) {
+                    NavigationLink(destination: GiftDetailsView(recipient: recipient)) {
                         HStack {
                             VStack(alignment: .leading) {
                                 Text(recipient.name)
@@ -34,20 +30,12 @@ struct TrackGiftsView: View {
                             }
                             
                             Spacer()
-                            
-                            Image(systemName: "chevron.right")
-                                .foregroundColor(.gray)
+
                         }
                     }
                 }
             }
             .navigationTitle("Giftees")
-        }
-        
-        .sheet(isPresented: $showGiftSheet) {
-            if let selectedRecipient = selectedRecipient {
-                GiftDetailsView(recipient: selectedRecipient, showGiftDetails: $showGiftSheet)
-            }
         }
     }
 }
