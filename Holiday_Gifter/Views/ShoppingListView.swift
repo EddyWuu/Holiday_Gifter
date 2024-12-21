@@ -1,5 +1,5 @@
 //
-//  OverviewView.swift
+//  ShoppingListView.swift
 //  Holiday_Gifter
 //
 //  Created by Edmond Wu on 2024-09-17.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct OverviewView: View {
+struct ShoppingListView: View {
     
     var body: some View {
         VStack {
@@ -18,8 +18,4 @@ struct OverviewView: View {
         }
         .padding()
     }
-}
-
-#Preview {
-    OverviewView()
 }

@@ -13,19 +13,19 @@ struct ContentView: View {
     
     var body: some View {
         TabView {
-            HomeView()
-                .tabItem {
-                    Label("Home", systemImage: "house")
-                }
+//            HomeView()
+//                .tabItem {
+//                    Label("Home", systemImage: "house")
+//                }
             
             TrackGiftsView(viewModel: recipientsViewModel)
                 .tabItem {
                     Label("Track Gifts", systemImage: "gift")
                 }
             
-            OverviewView()
+            ShoppingListView()
                 .tabItem {
-                    Label("Overview", systemImage: "chart.bar")
+                    Label("Shopping List", systemImage: "chart.bar")
                 }
         }
     }
