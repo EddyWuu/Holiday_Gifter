@@ -9,6 +9,7 @@ import SwiftUI
 
 struct GiftDetailsView: View {
     
+    @ObservedObject var viewModel: RecipientsViewModel
     var recipient: Recipient
     @State private var addGiftSheet: Bool = false
     
@@ -30,7 +31,7 @@ struct GiftDetailsView: View {
                         }
                         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                             Button(role: .destructive) {
-                                // TODO, to remove from gifts
+                                viewModel.removeGift(gift, from: recipient)
                             } label: {
                                 Label("Delete", systemImage: "trash")
                             }
@@ -55,7 +56,7 @@ struct GiftDetailsView: View {
             }
         }
         .sheet(isPresented: $addGiftSheet) {
-            AddGiftSheetView(recipient: recipient)
+            AddGiftSheetView(viewModel: viewModel, recipient: recipient)
         }
     }
 }

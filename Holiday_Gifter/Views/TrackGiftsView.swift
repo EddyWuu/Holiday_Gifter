@@ -11,14 +11,14 @@ struct TrackGiftsView: View {
     
     @ObservedObject var viewModel: RecipientsViewModel
     @State var newRecipientName: String = ""
-    @State var selectedRecipient: Recipient?
+    @State private var showAddRecipientSheet = false
     
     var body: some View {
         
         NavigationView {
             VStack {
                 List(viewModel.recipients) { recipient in
-                    NavigationLink(destination: GiftDetailsView(recipient: recipient)) {
+                    NavigationLink(destination: GiftDetailsView(viewModel: viewModel, recipient: recipient)) {
                         HStack {
                             VStack(alignment: .leading) {
                                 Text(recipient.name)
@@ -34,8 +34,25 @@ struct TrackGiftsView: View {
                         }
                     }
                 }
+                
+                // button for adding recipient
+                Button(action: {
+                    showAddRecipientSheet = true
+                }) {
+                    Label("Add Recipient", systemImage: "person.badge.plus")
+                        .font(.headline)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(Color.green.opacity(0.8))
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                        .padding(.horizontal)
+                }
             }
             .navigationTitle("Giftees")
+            .sheet(isPresented: $showAddRecipientSheet) {
+                AddRecipientView(viewModel: viewModel)
+            }
         }
     }
 }

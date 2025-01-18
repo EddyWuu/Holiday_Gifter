@@ -7,8 +7,9 @@
 
 import Foundation
 
-struct Gift: Identifiable {
+struct Gift: Identifiable, Codable {
     
+    // autogen a unique id
     var id: UUID = UUID()
     var name: String
     var price: Double
@@ -16,7 +17,7 @@ struct Gift: Identifiable {
     var imageUrl: String?
 }
 
-struct Recipient: Identifiable {
+struct Recipient: Identifiable, Codable {
     
     var id: UUID = UUID()
     var name: String

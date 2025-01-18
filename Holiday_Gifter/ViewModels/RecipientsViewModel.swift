@@ -9,23 +9,36 @@ import Foundation
 
 class RecipientsViewModel: ObservableObject {
     
-    // initialize array of recipients with Recipient model, empty
-    @Published var recipients: [Recipient] = [
-            Recipient(name: "John Doe", gifts: [
-                Gift(name: "Smartwatch", price: 299.99),
-                Gift(name: "Headphones", price: 199.99)
-            ]),
-            Recipient(name: "Jane Smith", gifts: [
-                Gift(name: "Coffee Maker", price: 89.99),
-                Gift(name: "Bluetooth Speaker", price: 59.99)
-            ]),
-            Recipient(name: "Emily Johnson", gifts: [
-                Gift(name: "Fitness Tracker", price: 149.99),
-                Gift(name: "Tablet", price: 499.99)
-            ])
-        ]
+    @Published var recipients: [Recipient] = [] {
+        didSet {
+            saveRecipients()
+        }
+    }
+
+    // load recipients on initialization
+    init() {
+        loadRecipients()
+    }
     
+    // save recipients to userdefaults
+    private func saveRecipients() {
+        do {
+            let data = try JSONEncoder().encode(recipients)
+            UserDefaults.standard.set(data, forKey: "recipients")
+        } catch {
+            print("Failed to save recipients: \(error)")
+        }
+    }
     
+    // load recipients from user defaults
+    private func loadRecipients() {
+        guard let data = UserDefaults.standard.data(forKey: "recipients") else { return }
+        do {
+            recipients = try JSONDecoder().decode([Recipient].self, from: data)
+        } catch {
+            print("Failed to load recipients: \(error)")
+        }
+    }
     
     // func to add recipient
     func addRecipient(name: String) {
@@ -34,17 +47,21 @@ class RecipientsViewModel: ObservableObject {
         recipients.append(newRecipient)
     }
     
-    // currently removing by name
-    func removeRecipient(name: String) {
+    func removeRecipient(_ recipient: Recipient) {
         
-        recipients.removeAll { $0.name == name }
     }
     
-    func addGift() {
-
+    func addGift(_ gift: Gift, to recipient: Recipient) {
+        // find first recipient whose id matches that id of the given recipient
+        if let index = recipients.firstIndex(where: { $0.id == recipient.id }) {
+            recipients[index].gifts.append(gift)
+        }
     }
     
-    func removeGift(gift: Gift) {
-        
+    func removeGift(_ gift: Gift, from recipient: Recipient) {
+        // find first recipient whose id matches that id of the given recipient
+        if let recipientIndex = recipients.firstIndex(where: { $0.id == recipient.id }) {
+            recipients[recipientIndex].gifts.removeAll { $0.id == gift.id }
+        }
     }
 }
