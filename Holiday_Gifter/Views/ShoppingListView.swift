@@ -15,6 +15,13 @@ struct ShoppingListView: View {
                 .imageScale(.large)
                 .foregroundStyle(.tint)
             Text("Hello, world! This is a SwiftUI app, overview.")
+            
+            Button(action: {
+                
+            }) {
+                Label("Set Budget", systemImage: "gear")
+            }
+            
         }
         .padding()
     }
