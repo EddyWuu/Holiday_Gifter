@@ -9,23 +9,23 @@ import SwiftUI
 
 struct ShoppingListView: View {
     
-    @State private var budget: Double = 0.0 // placeholder
-    @State private var spending: Double = 200.0
+    @ObservedObject var viewModel: RecipientsViewModel
+    @State private var isShowingChangeBudget: Bool = false
     
     var body: some View {
         VStack {
             
             // progress wheel
             VStack {
-                SpendingsCircleView(budget: budget, spending: spending)
+                SpendingsCircleView(budget: viewModel.overallBudget, spending: viewModel.totalSpending)
                     .frame(width: 500, height: 300)
                     .padding()
                 
                 // budget and spendings
                 VStack {
-                    Text("Spending: $\(spending, specifier: "%.2f")")
+                    Text("Spending: $\(viewModel.totalSpending, specifier: "%.2f")")
                         .font(.headline)
-                    Text("Budget: $\(budget, specifier: "%.2f")")
+                    Text("Budget: $\(viewModel.overallBudget, specifier: "%.2f")")
                         .font(.subheadline)
                         .foregroundColor(.gray)
                 }
@@ -36,16 +36,20 @@ struct ShoppingListView: View {
             
             // button to adjsut
             Button(action: {
-
+                isShowingChangeBudget = true
             }) {
                 Label("Adjust Budget", systemImage: "plus.circle")
+                    .font(.headline)
                     .padding()
                     .background(Color.green.opacity(0.8))
                     .foregroundColor(.white)
                     .cornerRadius(10)
+                    .padding(.horizontal)
             }
-            .padding(.bottom, 10)
         }
+        .sheet(isPresented: $isShowingChangeBudget, content: {
+            ChangeBudgetSheetView(viewModel: viewModel, isPresented: $isShowingChangeBudget)
+        })
     }
 }
 
@@ -67,6 +71,11 @@ struct SpendingsCircleView: View {
             let height = geometry.size.height
             let radius = min(width, height) / 2
             let center = CGPoint(x: width / 2, y: height)
+            let endAngle = -210 + 240 * progress
+            let endPoint = CGPoint(
+                x: center.x + radius * cos(endAngle * .pi / 180),
+                y: center.y + radius * sin(endAngle * .pi / 180)
+            )
             
             ZStack {
                 // arc of budget
@@ -77,7 +86,7 @@ struct SpendingsCircleView: View {
                                 endAngle: .degrees(30),
                                 clockwise: false)
                 }
-                .stroke(Color.gray.opacity(0.3), lineWidth: 20)
+                .stroke(Color.green.opacity(0.3), style: StrokeStyle(lineWidth: 20, lineCap: .round))
                 
                 // filled arc of spent
                 Path { path in
@@ -87,7 +96,20 @@ struct SpendingsCircleView: View {
                                 endAngle: .degrees(-210 + 240 * progress),
                                 clockwise: false)
                 }
-                .stroke(Color.green, lineWidth: 20)
+                .stroke(Color.green, style: StrokeStyle(lineWidth: 20, lineCap: .round))
+                
+                Circle()
+                    .fill(Color.green)
+                    .frame(width: 20, height: 20)
+                    .position(x: center.x + radius * cos(-210 * .pi / 180),
+                              y: center.y + radius * sin(-210 * .pi / 180))
+                
+                if progress > 0 {
+                    Circle()
+                        .fill(Color.green)
+                        .frame(width: 20, height: 20)
+                        .position(endPoint)
+                }
                 
                 // center spendings
                 VStack {

@@ -9,15 +9,36 @@ import Foundation
 
 class RecipientsViewModel: ObservableObject {
     
+    @Published var overallBudget: Double = 0.0 {
+        didSet {
+            saveOverallBudget()
+        }
+    }
+    
     @Published var recipients: [Recipient] = [] {
         didSet {
             saveRecipients()
         }
     }
+    
+    var totalSpending: Double {
+        recipients.flatMap { $0.gifts }.reduce(0) { $0 + $1.price }
+    }
 
     // load recipients on initialization
     init() {
         loadRecipients()
+        loadOverallBudget()
+    }
+    
+    private func saveOverallBudget() {
+        UserDefaults.standard.set(overallBudget, forKey: "overallBudget")
+    }
+    
+    private func loadOverallBudget() {
+        if let savedBudget = UserDefaults.standard.value(forKey: "overallBudget") as? Double {
+            overallBudget = savedBudget
+        }
     }
     
     // save recipients to userdefaults
@@ -48,7 +69,8 @@ class RecipientsViewModel: ObservableObject {
     }
     
     func removeRecipient(_ recipient: Recipient) {
-        
+        // remove by unique id
+        recipients.removeAll { $0.id == recipient.id }
     }
     
     func addGift(_ gift: Gift, to recipient: Recipient) {

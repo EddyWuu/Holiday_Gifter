@@ -23,9 +23,9 @@ struct ContentView: View {
                     Label("Track Gifts", systemImage: "gift")
                 }
             
-            ShoppingListView()
+            ShoppingListView(viewModel: recipientsViewModel)
                 .tabItem {
-                    Label("Shopping List", systemImage: "chart.bar")
+                    Label("Budget Tracker", systemImage: "chart.bar")
                 }
         }
     }

@@ -32,6 +32,13 @@ struct TrackGiftsView: View {
                             Spacer()
 
                         }
+                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                            Button(role: .destructive) {
+                                viewModel.removeRecipient(recipient)
+                            } label: {
+                                Label("Delete", systemImage: "trash")
+                            }
+                        }
                     }
                 }
                 

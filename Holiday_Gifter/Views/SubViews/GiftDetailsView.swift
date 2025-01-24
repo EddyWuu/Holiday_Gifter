@@ -48,7 +48,7 @@ struct GiftDetailsView: View {
                         .bold()
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .background(Color.blue)
+                        .background(Color.green)
                         .foregroundColor(.white)
                         .cornerRadius(10)
                 }
